@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% load custom_filter %}
+
+{% block title %} {% endblock title %}
+
+{% block style %}
+<style>
+    .to_cart {
+        background-color: rgb(145, 191, 232);
+        margin: 5px 15px;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 10px;
+
+    }
+
+    .to_cart input {
+        background-color: rgb(211, 197, 197);
+        font-size: 25px;
+        width: 30px;
+        outline: none;
+        border-radius: 10px;
+    }
+
+    .to_cart input:hover {
+        cursor: pointer;
+        color: aquamarine;
+        background-color: brown;
+    }
+   
+    .btn:hover {
+        background-color: orangered;
+        border-bottom: 2px solid rgb(80, 13, 213);
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    }
+   
+</style>
+{% endblock style %}
+</head>
+
+<body>
+
+
+    {% block content %}
+    <div id="carouselExampleCaptions" class="carousel slide  mt-2  " data-bs-ride="false">
+       
+        <div class="carousel-inner">
+          {% for offers in alloffers %}
+          <div class="carousel-item active">
+            <img src="{{offers.photo.url}}" class="d-block w-100 " style="height:350px ; width:50%; " alt="...">
+            <div class="carousel-caption d-md-block">
+      
+              <p>{{offers.des}}</p>
+            </div>
+      
+          </div>
+        
+            {% endfor %}
+      
+      
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      
+
+
+   
+    <div class="row mt-3">
+        {% for product in products %}
+
+        <div class="col-md-4 " id="{{product.id}}">
+            <div class="ms-4">
+                <h3 class="text-center bg-warning mt-3">{{product.name}}</h3>
+
+                <img src="{{product.image.url}}" class="img-fluid" style="height: 300px; object-fit:cover">
+
+                <h4 class="text-center"><a href="/prodetail/{{product.slug}}"> {{product.title}} </a><br>
+                    <span class="mt-2">Price: {{product.price|currency}}</span> <br> Discount:<strike> {{product.sellprice|currency}}</strike>
+                </h4>
+
+
+                {% if product|is_in_cart:request.session.cart %}
+                <div class="to_cart">
+                    <form action="/store/#{{product.id}}" method="POST">
+                        {% csrf_token %}
+                        <input hidden type="text" name='product' value="{{product.id}}">
+                        <input hidden type="text" name='remove' value="True">
+                        <input type="submit" value="-">
+                    </form>
+                    <div>{{product|cart_quantity:request.session.cart}} in Card</div>
+                    <form action="/store/#{{product.id}}" method="POST">
+                        {% csrf_token %}
+                        <input hidden type="text" name='product' value="{{product.id}}">
+                        <input type="submit" value="+">
+                    </form>
+                </div>
+
+                {% else %}
+                <form action="{% url 'Store' %}" method="POST">
+                    {% csrf_token %}
+                    <input hidden type="text" name='product' value="{{product.id}}">
+                    <input type="submit"  class="btn btn-success BT-bar" value="Add To Card">
+                    
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+    {% endblock content %}

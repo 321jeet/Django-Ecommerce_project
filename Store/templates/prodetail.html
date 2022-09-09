@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<p class="display-4 pl-5 ml-5 text-center ">Product:{{products.name}}</p>
+<hr>
+
+<div class="row  ">
+
+  <div class="col-md-6">
+    <img src="{{products.image.url}}" class="img-fluid ms-5" style="height:500px ; width:400px ;">
+  </div>
+  <div class="col-md-6 mt-3">
+    <h3>title:{{products.title}}</h3>
+    <h4> <span >Price:{{products.price}}rs</span> <br> Discount<strike>
+        {{products.sellprice}}Rs</strike></h4>
+    <h3>Descriptions: {{products.descriptions}}</h3>
+  </div>
+
+</div>
+{% endblock content %}
