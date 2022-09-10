@@ -79,10 +79,13 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
+        
+#       sql sever connection  
+        
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'Esite',
         'USER':'root',
-        'PASSWORD': 'Kish@n65',  
+        'PASSWORD': '*******',  
         'HOST':'localhost',
         'PORT':'3306',
         
